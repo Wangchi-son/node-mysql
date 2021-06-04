@@ -20,21 +20,18 @@ var app = http.createServer(function (request, response) {
   var pathname = url.parse(_url, true).pathname;
   if (pathname === "/") {
     if (queryData.id === undefined) {
-      // fs.readdir('./data', function(error, filelist){
-      //   var title = 'Welcome';
-      //   var description = 'Hello, Node.js';
-      //   var list = template.list(filelist);
-      //   var html = template.HTML(title, list,
-      //     `<h2>${title}</h2>${description}`,
-      //     `<a href="/create">create</a>`
-      //   );
-      //   response.writeHead(200);
-      //   response.end(html);
-      // });
       db.query(`SELECT * FROM topic`, (err, topics) => {
-        console.log(topics);
+        var title = "Welcome";
+        var description = "Hello, Node.js";
+        var list = template.list(topics);
+        var html = template.HTML(
+          title,
+          list,
+          `<h2>${title}</h2>${description}`,
+          `<a href="/create">create</a>`
+        );
         response.writeHead(200);
-        response.end("Success");
+        response.end(html);
       });
     } else {
       fs.readdir("./data", function (error, filelist) {
